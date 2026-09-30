@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pembayaran — Bu Nasir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hijau-tua:#0b3d2c;
+  --hijau:#0f5e42;
+  --hijau-muda:#15805a;
+  --emas:#d4af37;
+  --emas-tua:#a8821a;
+  --emas-muda:#f0d878;
+  --marun:#7a1f2b;
+  --krem:#fbf5e5;
+  --krem-tua:#f2e8d0;
+  --krem-gelap:#e8dcbe;
+  --coklat:#3d2b14;
+  --teks:#241a0f;
+  --teks-lembut:#6b5a3d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--krem);
+  color:var(--teks);
+  line-height:1.65;
+  padding:20px;
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(212,175,55,0.10), transparent 45%),
+    radial-gradient(circle at 88% 92%, rgba(15,94,66,0.10), transparent 45%);
+  min-height:100vh;
+}
+
+.songket{
+  height:20px;
+  background:var(--hijau-tua);
+  position:relative;
+  border-top:2px solid var(--emas);
+  border-bottom:2px solid var(--emas);
+  margin-bottom:26px;
+  border-radius:2px;
+}
+.songket::before{
+  content:'';
+  position:absolute;
+  inset:4px 0;
+  background-image:
+    radial-gradient(circle, var(--emas) 2.5px, transparent 3px),
+    radial-gradient(circle, var(--emas-muda) 1px, transparent 1.5px);
+  background-size:22px 22px, 22px 22px;
+  background-position:0 center, 11px center;
+  background-repeat:repeat-x;
+}
+
+/* Container */
+.container{
+  max-width:700px;
+  margin:0 auto;
+  background:var(--krem-tua);
+  padding:32px 30px 34px;
+  border-radius:16px;
+  border:2px solid var(--emas-tua);
+  box-shadow:
+    0 10px 30px rgba(61,43,20,0.18),
+    inset 0 0 0 1px rgba(212,175,55,0.35);
+  position:relative;
+  overflow:hidden;
+}
+.container::before{
+  content:'';
+  position:absolute;inset:8px;
+  border:1px solid rgba(212,175,55,0.5);
+  border-radius:10px;
+  pointer-events:none;
+}
+
+h2{
+  text-align:center;
+  font-family:'Amiri',serif;
+  color:var(--hijau-tua);
+  margin-bottom:22px;
+  font-size:1.7rem;
+  font-weight:700;
+  letter-spacing:1px;
+  padding-bottom:14px;
+  border-bottom:3px double var(--emas);
+  position:relative;
+}
+h2::before,
+h2::after{
+  content:'❁';
+  color:var(--emas-tua);
+  font-size:.85rem;
+  margin:0 12px;
+  vertical-align:middle;
+}
+
+/* Order summary */
+.order-summary{
+  background:#fff;
+  padding:18px 22px;
+  border-radius:10px;
+  margin-bottom:24px;
+  border-left:6px solid var(--hijau);
+  box-shadow:
+    0 2px 8px rgba(61,43,20,0.08),
+    inset 0 0 0 1px rgba(212,175,55,0.35);
+  position:relative;
+}
+.order-summary p{
+  margin-bottom:6px;
+  font-size:1rem;
+  color:var(--teks);
+}
+.order-summary p strong{
+  color:var(--hijau-tua);
+  font-family:'Amiri',serif;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.order-summary .total{
+  font-family:'Amiri',serif;
+  font-size:1.5rem;
+  font-weight:700;
+  color:var(--marun);
+  margin-top:12px;
+  padding-top:12px;
+  border-top:2px dashed rgba(212,175,55,0.6);
+  letter-spacing:.5px;
+}
+
+/* Payment methods */
+.payment-methods{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:14px;
+  margin-bottom:24px;
+}
+.payment-card{
+  border:2px solid rgba(212,175,55,0.5);
+  border-radius:12px;
+  padding:14px 10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:.3s;
+  font-weight:600;
+  color:var(--teks);
+  background:#fff;
+  position:relative;
+  box-shadow:0 2px 6px rgba(61,43,20,0.06);
+}
+.payment-card img{
+  width:56px;height:56px;
+  object-fit:contain;
+  margin-bottom:9px;
+  border-radius:8px;
+  background:#fff;
+  padding:3px;
+  border:1px solid rgba(212,175,55,0.3);
+}
+.payment-card span{
+  font-family:'Amiri',serif;
+  font-size:1rem;
+  color:var(--hijau-tua);
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.payment-card:hover{
+  border-color:var(--emas);
+  transform:translateY(-3px);
+  box-shadow:0 8px 18px rgba(212,175,55,0.25);
+}
+.payment-card.selected{
+  border-color:var(--hijau);
+  background:linear-gradient(180deg, #fff, rgba(212,175,55,0.12));
+  box-shadow:
+    0 0 0 2px var(--emas),
+    0 8px 20px rgba(15,94,66,0.25);
+}
+.payment-card.selected span{color:var(--marun)}
+.payment-card.selected::after{
+  content:'✓';
+  position:absolute;
+  top:8px;right:10px;
+  background:var(--hijau);
+  color:#fff;
+  width:20px;height:20px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:700;
+  box-shadow:0 2px 6px rgba(11,61,44,0.4);
+}
+.payment-card input{display:none}
+
+/* Pay button */
+.btn-pay{
+  width:100%;
+  background:linear-gradient(180deg, var(--hijau-muda), var(--hijau-tua));
+  color:#fff;
+  border:1px solid var(--emas);
+  padding:15px;
+  border-radius:10px;
+  font-size:1rem;
+  font-weight:700;
+  font-family:'Poppins',sans-serif;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:.25s;
+  box-shadow:
+    0 4px 0 #072a1d,
+    0 6px 16px rgba(11,61,44,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-pay:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #072a1d,
+    0 8px 20px rgba(11,61,44,0.45);
+}
+.btn-pay:active{
+  transform:translateY(2px);
+  box-shadow:0 1px 0 #072a1d;
+}
+
+/* QR section */
+#qr-section{
+  display:none;
+  text-align:center;
+  margin-top:30px;
+  padding-top:24px;
+  border-top:3px double var(--emas);
+  animation:fadeIn .5s ease;
+}
+#qr-section h3{
+  font-family:'Amiri',serif;
+  color:var(--hijau-tua);
+  margin-bottom:18px;
+  font-size:1.2rem;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+#qr-section h3 span{
+  color:var(--marun);
+  border-bottom:2px dotted var(--emas);
+  padding:0 5px;
+}
+
+/* Bingkai QR khas pinto Aceh */
+.qr-frame{
+  display:inline-block;
+  position:relative;
+  padding:16px;
+  background:#fff;
+  border:2px solid var(--emas-tua);
+  border-radius:12px;
+  box-shadow:
+    0 8px 24px rgba(61,43,20,0.2),
+    inset 0 0 0 4px var(--krem-tua),
+    inset 0 0 0 5px var(--emas);
+  margin-bottom:18px;
+}
+.qr-frame::before,
+.qr-frame::after{
+  content:'❁';
+  position:absolute;
+  color:var(--emas-tua);
+  font-size:1rem;
+}
+.qr-frame::before{top:-10px;left:14px}
+.qr-frame::after{bottom:-10px;right:14px}
+
+#qr-image{
+  display:block;
+  border-radius:6px;
+  width:220px;height:220px;
+}
+
+.instruction{
+  font-size:.92rem;
+  color:var(--teks-lembut);
+  margin-bottom:20px;
+  font-style:italic;
+}
+
+.btn-finish{
+  display:inline-block;
+  background:linear-gradient(180deg, var(--hijau-muda), var(--hijau-tua));
+  color:#fff;
+  text-decoration:none;
+  padding:13px 28px;
+  border-radius:9px;
+  font-weight:700;
+  font-size:.88rem;
+  font-family:'Poppins',sans-serif;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  border:1px solid var(--emas);
+  box-shadow:
+    0 4px 0 #072a1d,
+    0 6px 16px rgba(11,61,44,0.35);
+  transition:.25s;
+}
+.btn-finish:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 6px 0 #072a1d,
+    0 8px 20px rgba(11,61,44,0.45);
+}
+.btn-finish:active{
+  transform:translateY(2px);
+  box-shadow:0 1px 0 #072a1d;
+}
+
+/* Footer kecil di bawah */
+.mini-footer{
+  text-align:center;
+  margin-top:26px;
+  color:var(--teks-lembut);
+  font-size:.8rem;
+  letter-spacing:1px;
+}
+.mini-footer .orn{color:var(--emas-tua);letter-spacing:8px;font-size:.85rem;display:block;margin-bottom:4px}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media (max-width: 768px){
+  .payment-methods{grid-template-columns:repeat(2, 1fr)}
+  .container{padding:22px}
+}
+@media (max-width: 480px){
+  body{padding:10px}
+  .container{padding:18px 16px 22px;border-radius:12px}
+  h2{font-size:1.35rem}
+  .order-summary p{font-size:.92rem}
+  .order-summary .total{font-size:1.25rem}
+  .payment-methods{grid-template-columns:1fr;gap:10px}
+  .payment-card{flex-direction:row;justify-content:flex-start;gap:14px;padding:12px 16px}
+  .payment-card img{width:44px;height:44px;margin-bottom:0}
+  #qr-image{width:180px;height:180px}
+  .btn-pay{font-size:.88rem}
+}
+</style>
+</head>
+<body>
+
+<div class="songket"></div>
+
+<div class="container">
+  <h2>Pilih Metode Pembayaran</h2>
+
+  <div class="order-summary">
+    <p><strong>Nama:</strong> {{NAMA}}</p>
+    <p><strong>Meja / Catatan:</strong> {{MEJA}}</p>
+    <div class="total">Total Bayar: Rp {{TOTAL_FORMAT}}</div>
+  </div>
+
+  <div class="payment-methods">
+    <label class="payment-card" onclick="selectPayment(this)"><input type="radio" name="payment_method" value="DANA"><img src="images.jpg" alt="DANA"><span>DANA</span></label>
+    <label class="payment-card" onclick="selectPayment(this)"><input type="radio" name="payment_method" value="OVO"><img src="images (13).jpg" alt="OVO"><span>OVO</span></label>
+    <label class="payment-card" onclick="selectPayment(this)"><input type="radio" name="payment_method" value="GOPAY"><img src="images (1).jpg" alt="GOPAY"><span>GOPAY</span></label>
+    <label class="payment-card" onclick="selectPayment(this)"><input type="radio" name="payment_method" value="BCA"><img src="images (2).jpg" alt="BCA"><span>BCA</span></label>
+    <label class="payment-card" onclick="selectPayment(this)"><input type="radio" name="payment_method" value="BSI"><img src="images (3).jpg" alt="BSI"><span>BSI</span></label>
+    <label class="payment-card" onclick="selectPayment(this)"><input type="radio" name="payment_method" value="Bank Aceh"><img src="images (4).jpg" alt="Bank Aceh"><span>Bank Aceh</span></label>
+  </div>
+
+  <button class="btn-pay" onclick="generateQR()">Tampilkan Kode QR</button>
+
+  <div id="qr-section">
+    <h3>Scan QR Code dengan aplikasi <span id="selected-method">pilihan Anda</span></h3>
+    <div class="qr-frame">
+      <img id="qr-image" src="" alt="QR Code Pembayaran">
+    </div>
+    <p class="instruction">Setelah melakukan pembayaran, tekan tombol di bawah untuk menyelesaikan pesanan.</p>
+    <a href="kik.html" class="btn-finish" onclick="alert('Pembayaran berhasil dikonfirmasi. Pesanan sedang diproses dapur Bu Nasir!');">Selesaikan Pesanan</a>
+  </div>
+
+  <div class="mini-footer">
+    <span class="orn">❁ ✦ ❁</span>
+    Bu Nasir — Kuliner Khas Aceh
+  </div>
+</div>
+
+<script>
+function selectPayment(el){
+  document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+
+function generateQR(){
+  const method = document.querySelector('input[name="payment_method"]:checked');
+  if (!method){
+    alert('Silakan pilih salah satu metode pembayaran terlebih dahulu!');
+    return;
+  }
+
+  document.getElementById('selected-method').innerText = method.value;
+
+  const total = {{TOTAL_ANGKA}};
+  const qrData = `BuNasir_${method.value}_Rp${total}_${Date.now()}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&color=0b3d2c&bgcolor=fbf5e5&data=${encodeURIComponent(qrData)}`;
+
+  const qrImage = document.getElementById('qr-image');
+  const qrSection = document.getElementById('qr-section');
+
+  qrImage.src = qrUrl;
+  qrSection.style.display = 'block';
+  qrSection.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
